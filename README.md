@@ -17,7 +17,7 @@ cp .env.example .env
 mkdir -p data
 ```
 
-3) **Put DawnCraft server files** into `./data` (see next section).
+3) Set `CF_API_KEY` in `.env` (required for CurseForge downloads).
 
 4) Start:
 
@@ -33,49 +33,32 @@ docker compose logs -f --tail=200
 
 Server listens on `25565/tcp`.
 
-## IMPORTANT: How to install DawnCraft server files
+## IMPORTANT: How DawnCraft is installed
 
-DawnCraft usually requires **their provided server pack/archive** (not only Forge installer).
-There are two common approaches:
+This stack uses `itzg/minecraft-server` with `TYPE=AUTO_CURSEFORGE`, which:
 
-### Option A (recommended): Use DawnCraft “Server Files” archive
+- downloads the modpack from CurseForge using your `CF_API_KEY`
+- installs Forge/mods/configs into `/data`
+- reuses `/data` on restarts (so the 800+ MB download happens only once unless you wipe `/data`)
 
-1) Download the official DawnCraft **Server Files** archive for the same modpack version you want.
-2) Extract/copy the contents of that archive into `./data/`.
+You still need the `./data` folder for persistence (world/mods/configs). You can delete `./data` only if you intentionally want a clean reinstall.
 
-You should end up with something like:
+### Pinning DawnCraft version
 
-- `data/mods/` (many `.jar`)
-- `data/config/`
-- `data/defaultconfigs/` (often)
-- `data/kubejs/` (if included)
-- `data/scripts/` or similar
+By default the image can track “latest”, but for stability you should pin the exact file URL:
 
-Then start the container.
+- `CF_PAGE_URL=https://www.curseforge.com/minecraft/modpacks/dawn-craft/files/7243862`
 
-### Option B: Let container install Forge, then “overlay” mods/configs
+This is already set in `.env.example`.
 
-If you don’t have a full server pack, but only client pack content:
+### If CurseForge download fails
 
-1) Start once with empty `data/` (container will generate Forge server skeleton):
+Common causes:
 
-```bash
-docker compose up -d
-```
+- missing/invalid `CF_API_KEY`
+- API key contains `$` and is not quoted in `.env` (see `.env.example`)
 
-2) Stop:
-
-```bash
-docker compose down
-```
-
-3) Copy DawnCraft `mods/`, `config/`, `defaultconfigs/`, etc. into `./data/`.
-
-4) Start again.
-
-Notes:
-- Many guides pin **Forge 40.2.1** for 1.18.2; this stack exposes it via `FORGE_VERSION`.
-- Some modpacks require accepting additional mod-specific prompts on first boot; check logs.
+As a fallback, you can still do a manual install by disabling AUTO_CURSEFORGE and copying server files into `./data`, but that is not the default path in this stack.
 
 ## Where to put world/mods/configs
 

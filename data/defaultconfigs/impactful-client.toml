@@ -1,6 +1,0 @@
-
-["client screen shake setting"]
-	disable_screen_shake = false
-	#Range: 0.0 ~ 10.0
-	global_screen_shake_amplitude = 0.2
-

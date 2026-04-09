@@ -13,12 +13,13 @@ services:
       # Accept Mojang EULA. Must be TRUE for the server to start.
       - EULA=${EULA}
 
-      # --- SERVER TYPE / VERSION ---
-      # Forge server for Minecraft 1.18.2
-      - TYPE=FORGE
-      - VERSION=1.18.2
-      # DawnCraft guides often pin Forge 40.2.1
-      - FORGE_VERSION=${FORGE_VERSION}
+      # --- MODPACK (AUTO DOWNLOAD FROM CURSEFORGE) ---
+      # This will download/install the modpack into /data on first start.
+      # Requires a CurseForge API key.
+      - TYPE=AUTO_CURSEFORGE
+      - CF_API_KEY=${CF_API_KEY}
+      # You can point to the modpack page OR a specific file URL to pin the version.
+      - CF_PAGE_URL=${CF_PAGE_URL}
 
       # --- SERVER BASICS ---
       - SERVER_NAME=${SERVER_NAME}
