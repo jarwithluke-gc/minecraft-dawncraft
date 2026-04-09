@@ -1,0 +1,61 @@
+services:
+  dawncraft:
+    image: itzg/minecraft-server:java17
+    container_name: dawncraft
+    restart: unless-stopped
+
+    ports:
+      # Minecraft server port (TCP)
+      - "25565:25565"
+
+    environment:
+      # --- REQUIRED ---
+      # Accept Mojang EULA. Must be TRUE for the server to start.
+      - EULA=${EULA}
+
+      # --- SERVER TYPE / VERSION ---
+      # Forge server for Minecraft 1.18.2
+      - TYPE=FORGE
+      - VERSION=1.18.2
+      # DawnCraft guides often pin Forge 40.2.1
+      - FORGE_VERSION=${FORGE_VERSION}
+
+      # --- SERVER BASICS ---
+      - SERVER_NAME=${SERVER_NAME}
+      - MOTD=${MOTD}
+      - DIFFICULTY=${DIFFICULTY}
+      - MAX_PLAYERS=${MAX_PLAYERS}
+      - ONLINE_MODE=${ONLINE_MODE}
+      - VIEW_DISTANCE=${VIEW_DISTANCE}
+      - SIMULATION_DISTANCE=${SIMULATION_DISTANCE}
+
+      # --- OPS / WHITELIST ---
+      # Comma-separated list of player names, e.g. "Name1,Name2"
+      - OPS=${OPS}
+      - WHITELIST=${WHITELIST}
+      - ENFORCE_WHITELIST=${ENFORCE_WHITELIST}
+
+      # --- MEMORY / JVM ---
+      # Simple RAM controls (recommended for first-time setup)
+      # You can hard-limit Xmx by setting MAX_MEMORY (e.g. 10G) in .env
+      - INIT_MEMORY=${INIT_MEMORY}
+      - MAX_MEMORY=${MAX_MEMORY}
+
+      # Practical safe defaults for modded servers.
+      # If you want full manual control, set USE_AIKAR_FLAGS=false and edit JVM_OPTS.
+      - USE_AIKAR_FLAGS=${USE_AIKAR_FLAGS}
+      - JVM_OPTS=${JVM_OPTS}
+
+      # --- QUALITY OF LIFE ---
+      # Autopause is usually not great for modded packs; keep off.
+      - ENABLE_AUTOPAUSE=false
+
+      # --- TIMEZONE (optional) ---
+      - TZ=${TZ}
+
+    volumes:
+      # All server data lives here (world, mods, configs, logs, etc.)
+      - ./data:/data
+
+    stdin_open: true
+    tty: true
