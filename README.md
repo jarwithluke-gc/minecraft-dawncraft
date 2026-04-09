@@ -1,4 +1,4 @@
-# DawnCraft (Forge 1.18.2) Docker Compose
+# Prominence™ II: Hasturian Era (Fabric 1.20.1) Docker Compose
 
 ## Files
 
@@ -33,21 +33,21 @@ docker compose logs -f --tail=200
 
 Server listens on `25565/tcp`.
 
-## IMPORTANT: How DawnCraft is installed
+## IMPORTANT: How the modpack is installed
 
 This stack uses `itzg/minecraft-server` with `TYPE=AUTO_CURSEFORGE`, which:
 
 - downloads the modpack from CurseForge using your `CF_API_KEY`
-- installs Forge/mods/configs into `/data`
+- installs the mod loader/mods/configs into `/data`
 - reuses `/data` on restarts (so the 800+ MB download happens only once unless you wipe `/data`)
 
 You still need the `./data` folder for persistence (world/mods/configs). You can delete `./data` only if you intentionally want a clean reinstall.
 
-### Pinning DawnCraft version
+### Pinning modpack version
 
 By default the image can track “latest”, but for stability you should pin the exact file URL:
 
-- `CF_PAGE_URL=https://www.curseforge.com/minecraft/modpacks/dawn-craft/files/7243862`
+- `CF_PAGE_URL=https://www.curseforge.com/minecraft/modpacks/prominence-2-hasturian-era/files/7856383`
 
 This is already set in `.env.example`.
 
